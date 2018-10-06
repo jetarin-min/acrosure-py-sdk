@@ -4,19 +4,20 @@ import json
 # API_URL = 'http://localhost:8000'
 API_URL = "https://my-json-server.typicode.com/jetarin-min/json-placeholder/"
 
-def api( path, body, token ):
+def api( path, body = None, token = None):
     try:
+        print("path " + path)
+        print("token " + token)
         headers = {"Content-Type": "application/json"}
         if token:
             headers.Authorization = "Bearer " + token
-        #response = requests.post(API_URL + path,
         response = requests.get(API_URL + path,
-            data=json.dumps(body),
-            headers=headers
-        if !response:
+            data = json.dumps(body),
+            headers = headers)
+        if not response:
             raise Exception("no response")
         data = response.json()
-        if data["status"] != "ok":
+        if data.get("status") != "ok":
             raise Exception(data)
         return data["data"]
     except Exception as err:
@@ -28,5 +29,3 @@ def api( path, body, token ):
             elif error.get('response'):
                 raise Exception(error["response"])
         raise Exception(error)
-  }
-}

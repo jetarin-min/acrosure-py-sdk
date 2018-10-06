@@ -1,3 +1,4 @@
+*.pyc
 build
 dist
-acrosure_sdk.egg-info
+acrosure.egg-info

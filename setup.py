@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="acrosure_sdk",
+    name="acrosure",
     version="0.0.1",
     author="Jetarin Chokchaipermpoonphol",
     author_email="jetarin.min@gmail.com",

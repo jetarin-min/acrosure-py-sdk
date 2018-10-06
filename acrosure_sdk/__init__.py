@@ -1,3 +1,1 @@
-from .client import Client
-
-name = "example_pkg"
+from .client import AcrosureClient
