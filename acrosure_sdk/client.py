@@ -2,9 +2,9 @@ from .api import api
 from .application import ApplicationManager
 
 class AcrosureClient:
-    def __init__( self, token, product_id, application_id ):
+    def __init__( self, token, application_id, product_id ):
         self.token = token
-        def call_api( path, data ):
+        def call_api( path, data = None ):
             return api( path, data, self.token )
 
         self.application = ApplicationManager(id = application_id, call_api = call_api)
@@ -21,6 +21,5 @@ class AcrosureClient:
     #         print("ERROR")
     #         print(err)
     
-    def call( self, path, data ):
-        print("token is " + self.token)
+    def call( self, path, data = None ):
         return api( path, data, self.token )

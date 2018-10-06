@@ -1,8 +1,9 @@
-from acrosure import AcrosureClient
+from acrosure_sdk import AcrosureClient
 
-client = AcrosureClient()
-client.call("success")
-client.call("fail")
+client = AcrosureClient("token1", "app1", "product1")
+# import pdb; pdb.set_trace()
+client.application.call_api("success")
+# client.application.call_api("fail")
 # import pdb; pdb.set_trace()
 
 print("END")
