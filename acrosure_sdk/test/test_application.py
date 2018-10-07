@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from acrosure_sdk import AcrosureClient
+from ..client import AcrosureClient
+from ..application import ApplicationManager
 
 from .constants import TEST_SECRET_KEY
 
@@ -14,6 +15,7 @@ class ApplicationTestCase(unittest.TestCase):
         client = self.client
         application = self.client.application
         self.assertIsInstance(client, AcrosureClient)
+        self.assertIsInstance(application, ApplicationManager)
 
 if __name__ == '__main__':
     unittest.main()
