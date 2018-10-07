@@ -2,7 +2,7 @@ import requests
 import json
 # const API_URL = 'https://api.phantompage.com'
 # API_URL = 'http://localhost:8000'
-API_URL = "https://my-json-server.typicode.com/jetarin-min/json-placeholder/"
+API_URL = "https://my-json-server.typicode.com/jetarin-min/json-placeholder"
 
 def api( path, body = None, token = None):
     try:
