@@ -33,15 +33,15 @@ class AcrosureClient:
         Call Acrosure API with corresponding url & current API key.
     """
 
-    def __init__( self, token, application_id, product_id ):
+    def __init__( self, token, application_id = None, product_id = None ):
         """
         Parameters
         ----------
         token : str
             An access token
-        application_id : str
+        application_id : str, optional
             A application id
-        product_id : str
+        product_id : str, optional
             A product id
         """
 
