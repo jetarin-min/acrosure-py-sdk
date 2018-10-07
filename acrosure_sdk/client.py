@@ -1,4 +1,8 @@
-from .utils import api
+import hashlib
+import hmac
+import base64
+
+from .utils import ( api, is_python3 )
 from .application import ApplicationManager
 from .product import ProductManager
 from .policy import PolicyManager
@@ -65,3 +69,31 @@ class AcrosureClient:
         """
 
         return api( path, data, self.token )
+
+    def verify_signature( self, signature, data ):
+        """
+        Verify signature in webhook event.
+
+        Parameters
+        ----------
+        signature : str
+            A signature received from webhook.
+        data : str
+            A string of raw data.
+
+        Returns
+        ----------
+        boolean
+            Whether the signature is valid or not.
+        """
+        if is_python3():
+            message = bytes(data, "utf-8")
+            secret = bytes(self.token, "utf-8")
+        else:
+            message = bytes(data.decode('utf-8').encode('utf-8'))
+            secret = bytes(self.token.decode('utf-8').encode('utf-8'))
+        hash = hmac.new(secret, message, hashlib.sha256)
+
+        expected = hash.hexdigest()
+
+        return signature == expected
