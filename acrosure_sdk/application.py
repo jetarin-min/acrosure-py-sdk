@@ -1,6 +1,6 @@
 class ApplicationManager:
     """
-    Create an application manager.
+    Represents an ApplicationManager. (You most likely shouldn't be accessing this directly, use {@link AcrosureClient#application} instead.)
     """
 
     def __init__( self, id, call_api ):
@@ -25,7 +25,6 @@ class ApplicationManager:
             An application id.
         """
         self.id = id
-        self.gg = id
 
     def get( self, id = None ):
         """
@@ -249,14 +248,16 @@ class ApplicationManager:
         except Exception as err:
             raise err
 
-    def select_package( self, query ):
+    def select_package( self, args ):
         """
         Select package for current application.
 
         Parameters
         ----------
-        query : dict
-            Query object (See Acrosure API document for more detail).
+        args : dict
+            A dictionary consists of several properties.
+            package_code : str
+                A string of package_code.
 
         Returns
         -------
@@ -264,12 +265,9 @@ class ApplicationManager:
             Updated application.
         """
         try:
-            if not query.get("package_code"):
-                raise("package_code was not provided")
-            package_code = query.get("package_code")
             resp = self.call_api("/applications/select-package", {
                 "application_id": self.id,
-                "package_code": package_code
+                "package_code": args.get("package_code")
             })
             return resp
         except Exception as err:
@@ -317,14 +315,15 @@ class ApplicationManager:
         except Exception as err:
             raise err
     
-    def get_2c2p_hash( self, query ):
+    def get_2c2p_hash( self, args ):
         """
         Get 2C2P hash.
 
         Parameters
         ----------
-        query : dict
-            Query object (See Acrosure API document for more detail).
+        args : dict
+            frontend_url : str
+                A string of frontend_url.
 
         Returns
         -------
@@ -332,12 +331,9 @@ class ApplicationManager:
             2C2P hash string.
         """
         try:
-            if not query.get("frontend_url"):
-                raise ("frontend_url was not provided")
-            frontend_url = query.get("frontend_url")
             resp = self.call_api("/payments/2c2p/get-hash", {
                 "application_id": self.id,
-                "frontend_url": frontend_url
+                "frontend_url": args.get("frontend_url")
             })
             if not resp:
                 raise("no response")
