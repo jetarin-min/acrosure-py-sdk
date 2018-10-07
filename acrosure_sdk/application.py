@@ -2,6 +2,7 @@ class ApplicationManager:
     """
     Create an application manager.
     """
+
     def __init__( self, id, call_api ):
         """
         Parameters
@@ -38,7 +39,7 @@ class ApplicationManager:
         Returns
         -------
         dict
-            An application
+            An application.
         """
         try:
             if id:
@@ -65,7 +66,7 @@ class ApplicationManager:
         Returns
         -------
         list
-            Applications
+            Applications.
         """
         try:
             resp = self.call_api("/applications/list", query)
@@ -118,10 +119,10 @@ class ApplicationManager:
         Returns
         -------
         dict
-            Created application
+            Created application.
         """
         try:
-            resp = self.call_api('/applications/create', {
+            resp = self.call_api("/applications/create", {
                 "product_id": product_id,
                 "basic_data": basic_data,
                 "package_options": package_options,
@@ -135,7 +136,7 @@ class ApplicationManager:
                 "step": step
             })
             if not resp:
-                raise('no response')
+                raise("no response")
             if resp.get("id"):
                 self.id = resp.get("id")
             if resp.get("status"):
@@ -188,12 +189,12 @@ class ApplicationManager:
         Returns
         -------
         dict
-            Updated application
+            Updated application.
         """
         try:
             if application_id:
                 self.id = application_id
-            resp = self.call_api('/applications/update', {
+            resp = self.call_api("/applications/update", {
                 "application_id": application_id,
                 "basic_data": basic_data,
                 "package_options": package_options,
@@ -207,7 +208,7 @@ class ApplicationManager:
                 "step": step
             })
             if not resp:
-                raise('no response')
+                raise("no response")
             if resp.get("status"):
                 self.id = resp.get("status")
             return resp
@@ -221,10 +222,10 @@ class ApplicationManager:
         Returns
         -------
         list
-            Available packaged
+            Available packaged.
         """
         try:
-            resp = self.call_api('/applications/get-packages', {
+            resp = self.call_api("/applications/get-packages", {
                 "application_id": self.id
             })
             return resp
@@ -238,10 +239,10 @@ class ApplicationManager:
         Returns
         -------
         list
-            Current application's package
+            Current application's package.
         """
         try:
-            resp = self.call_api('/applications/get-package', {
+            resp = self.call_api("/applications/get-package", {
                 "application_id": self.id
             })
             return resp
@@ -252,16 +253,21 @@ class ApplicationManager:
         """
         Select package for current application.
 
+        Parameters
+        ----------
+        query : dict
+            Query object (See Acrosure API document for more detail).
+
         Returns
         -------
         dict
-            Updated application
+            Updated application.
         """
         try:
             if not query.get("package_code"):
                 raise("package_code was not provided")
             package_code = query.get("package_code")
-            resp = self.call_api('/applications/select-package', {
+            resp = self.call_api("/applications/select-package", {
                 "application_id": self.id,
                 "package_code": package_code
             })
@@ -276,14 +282,65 @@ class ApplicationManager:
         Returns
         -------
         dict
-            Submitted application
+            Submitted application.
         """
         try:
-            resp = self.call_api('/applications/submit', {
+            resp = self.call_api("/applications/submit", {
                 "application_id": self.id
             })
             if not resp:
-                raise('no response')
+                raise("no response")
+            if resp.get("status"):
+                self.status = resp.status
+            return resp
+        except Exception as err:
+            raise err
+    
+    def confirm( self ):
+        """
+        Confirm current application.
+
+        Returns
+        -------
+        dict
+            Confirmed application.
+        """
+        try:
+            resp = self.call_api("/applications/confirm", {
+                "application_id": self.id
+            })
+            if not resp:
+                raise("no response")
+            if resp.get("status"):
+                self.status = resp.status
+            return resp
+        except Exception as err:
+            raise err
+    
+    def get_2c2p_hash( self, query ):
+        """
+        Get 2C2P hash.
+
+        Parameters
+        ----------
+        query : dict
+            Query object (See Acrosure API document for more detail).
+
+        Returns
+        -------
+        str
+            2C2P hash string.
+        """
+        try:
+            if not query.get("frontend_url"):
+                raise ("frontend_url was not provided")
+            frontend_url = query.get("frontend_url")
+            resp = self.call_api("/payments/2c2p/get-hash", {
+                "application_id": self.id,
+                "frontend_url": frontend_url
+            })
+            if not resp:
+                raise("no response")
             if resp.get("status"):
                 self.status = resp.status
             return resp
