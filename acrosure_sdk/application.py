@@ -1,3 +1,5 @@
+from .utils import decorate
+
 class ApplicationManager:
     """
     Represents an ApplicationManager. (You most likely shouldn't be accessing this directly, use {@link AcrosureClient#application} instead.)
@@ -121,7 +123,7 @@ class ApplicationManager:
             Created application.
         """
         try:
-            resp = self.call_api("/applications/create", {
+            body = decorate({
                 "product_id": product_id,
                 "basic_data": basic_data,
                 "package_options": package_options,
@@ -134,6 +136,7 @@ class ApplicationManager:
                 "group_policy_id": group_policy_id,
                 "step": step
             })
+            resp = self.call_api("/applications/create", body)
             if not resp:
                 raise("no response")
             if resp.get("id"):
@@ -193,8 +196,8 @@ class ApplicationManager:
         try:
             if application_id:
                 self.id = application_id
-            resp = self.call_api("/applications/update", {
-                "application_id": application_id,
+            body = decorate({
+                "application_id": self.id,
                 "basic_data": basic_data,
                 "package_options": package_options,
                 "additional_data": additional_data ,
@@ -206,6 +209,7 @@ class ApplicationManager:
                 "group_policy_id": group_policy_id,
                 "step": step
             })
+            resp = self.call_api("/applications/update", body)
             if not resp:
                 raise("no response")
             if resp.get("status"):

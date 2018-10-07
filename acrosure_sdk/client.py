@@ -1,4 +1,4 @@
-from .api import api
+from .utils import api
 from .application import ApplicationManager
 from .product import ProductManager
 from .policy import PolicyManager
